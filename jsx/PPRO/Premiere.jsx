@@ -85,6 +85,17 @@ var NOT_SET = "-400000";
 
 $._PPP_={
 
+	importCustomFiles : function (importThese) {
+		// var importThese = "/Volumes/Macintosh HD/Users/boseongpark/Movies/Video Source/[MV] Anne-Marie - 2002 [Official Video].mp4"
+		
+		if (app.project) {
+			app.project.importFiles(importThese,
+				true, // suppress warnings
+				app.project.getInsertionBin(),
+				false); // import as numbered stills
+		}
+	},
+
 	getVersionInfo : function () {
 		return 'PPro ' + app.version + 'x' + app.build;
 	},
