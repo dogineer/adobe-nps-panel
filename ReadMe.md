@@ -1,125 +1,62 @@
-# Premiere Pro panels
+# **Premiere Pro CNPS panel**
 
-*Last updated February 2023, to coincide with the  Premiere Pro 23.2 release, also known as "Premiere Pro 2023".*
+## **0. 개요**
+어도비 CEP(Adobe Common Extensibility Platform) 웹 엔진 프레임워크를 통해<br> 
+Adobe Creative Cloud 애플리케이션에서 확장 기능을 Windows 및 macOS에서 사용되도록 개발되었습니다.
 
-## Create panels for Premiere Pro
+<br>
 
-### 1. Obtain and install these
+## **1. 설치 구성**
+---
+1.Chrome 브라우저 (디버그 워크플로를 위한 Chrome 브라우저)<br>
+2.프리미어 2022 (CEP HTML 확장을 지원하는 Adobe Creative Cloud 애플리케이션)<br>
+3.CNPS 플러그인<br>
 
-- [Creative Cloud](http://creative.adobe.com). Use the Creative Cloud
-    application to install Premiere Pro CC and other Adobe applications with
-    which you'll be developing and testing, as well as ExtendScript Toolkit
-    (available under 'previous versions').
+*참고: 플러그인 확장을 성공적으로 구성할려면 다음 애플리케이션이 있어야 합니다.*
+<br>
+<br>
 
-- The [CEP Test
-    Panel](https://github.com/Adobe-CEP/CEP-Resources/tree/master/CEP_11.x/Samples/CEP_HTML_Test_Extension-10.0)
-    shows the full capabilities of CEP panels.
+## **2. 패널 설치하기**
 
-- The [PProPanel](https://github.com/Adobe-CEP/Samples/tree/master/PProPanel)
-    sample project is exhaustive in its exercise of Premiere Pro's ExtendScript
-    API. If you're reading this, you likely already _have_ the PProPanel sample.
-    
-- [Microsoft Visual Studio Code](https://visualstudio.microsoft.com/vs/), and the [ExtendScript debugging extension](https://marketplace.visualstudio.com/items?itemName=Adobe.extendscript-debug). This extension running in VSCode is Adobe's recommended ExtendScript development environment. Sorry, ExtendScript Toolkit; you had a good long run.
+---
+### **[자동] mac-installer.sh을 통한 설치**
+- mac 또는 리눅스에서 설치 할 경우 밑의 명령어를 터미널(sudo su)에서 작성 후 mac-installer을 실행해주세요.
 
-*Note: Creative Cloud Desktop handles >95% of all extension installation cases, and the Adobe Exchange Store can take your extension's directory as an input, and generate a .zxp file for you. However, it is often desirable to be able to test deployment on a local system, so we're still including links to the following stand-alone tools.*
+```sh
+sudo su
+chmod +x mac-installer.sh
+sh mac-installer.sh
+```
+*참고: sh 스크립트가 진행이 끝나면 '3.서명되지 않는 패널 로드 사용'은 하지 않아도 됩니다. (스크립트에 포함되어 있습니다.)*
+<br>
+<br>
+### **[수동] 수동으로 파일 설치**
 
-- Use the [UPIA](https://helpx.adobe.com/creative-cloud/help/working-from-the-command-line.html) command line
-    utility to test .zxp installation.
+- CNPS 폴더를 밑의 경로에 넣어주세요.
 
-- The
-    [ZXPSignCmd](https://github.com/Adobe-CEP/CEP-Resources/tree/master/ZXPSignCMD)
-    signing utility creates signed .zxp bundles for Add-Ons or direct
-    distribution.
+```html
+Windows:    C:\Program Files (x86)\Common Files\Adobe\CEP\extensions
+Mac:        /Library/Application Support/Adobe/CEP/extensions
+```
+*참고: 전역 설치시 USER 라이브러리가 아닌. Root의 라이브러리에 설치해야합니다.*
+<br>
+<br>
 
-### 2. Enable loading of unsigned panels
+## **3. 서명되지 않은 패널 로드 사용**
+---
 
-Further [relevant information](https://medium.com/adobetech/how-to-create-your-first-adobe-panel-in-6-easy-steps-f8bd4ed5778) is available from the Extensibility team.
-
-*Note: Premiere Pro 23.x integrates CEP11, so even if you had unsigned panels
-loading before (up to CEP10), you'll need to perform this step again, but for key CSXS.11.*
-
-On MacOS, type the following into Terminal, then relaunch Finder (either via
-rebooting, or from the Force Quit dialog):
-
+### **[MAC]**
+- 터미널에서 작성해주세요.
 ```html
 defaults write /Users/<username>/Library/Preferences/com.adobe.CSXS.11.plist PlayerDebugMode 1
 ```
 
-On Windows, make the following registry entry (a new Key, of type String):
-
-![Registry image](payloads/Registry.png)
-
-### 3. Put panel into extensions directory
-
-Put `/PProPanel` or your own panel's containing directory here, to have Premiere
-Pro load it:
-
+### **[WINDOWS]**
+- 윈도우는 레지스트리를 콘솔창이 아닌 레지스트리를 변경하셔야합니다.
 ```html
-Windows:    C:\Program Files (x86)\Common Files\Adobe\CEP\extensions
-
-Mac:        /Library/Application Support/Adobe/CEP/extensions
+regedit > HKEY_CURRENT_USER/Software/Adobe/CSXS.11 
+그런 다음 값이 "1"인 "문자열" 유형의 새 항목 PlayerDebugMode를 추가합니다.
 ```
 
-*Note: That's the root /Library, not a specific user's ~/Library...*
-### 4. Write and test your panel's JavaScript using a JavaScript debugger
-
-Use Microsoft Visual Studio Code to debug your panel's JavaScript.
-
-Optional diagnostics: Turn on CEP logging. Find CEP logs (distinct from Premiere
-Pro's logs) here. Note that Mac Library path is the system's library, not the
-user's. Also, note that logging WILL impact performance.
-
-```html
-Windows:    %\AppData\Local\Temp\csxs11-PPRO.log
-Mac:        /Library/Logs/CSXS/csxs11-PPRO.log
-```
-
-Set logging level in Windows Registry (see above), or MacOS X .plist:
-
-```html
-defaults write /Users/<username>/Library/Preferences/com.adobe.CSXS.11.plist LogLevel 6
-```
-
-## 5. Create your panel's ExtendScript using Microsoft Visual Studio Code
-
-Once you've installed the ExtendScript debugging extension, you can set breakpoints in your ExtendScript code within VSCode. 
-
-
-Here's a [screen video](https://shared-assets.adobe.com/link/8c35be84-22fb-40fa-7715-b3fd94f474a6)
-showing how to debug panels at both the JavaScript and ExtendScript levels.
-
-## 6. Package and deploy your panel
-
-Further [relevant information](https://github.com/Adobe-CEP/Getting-Started-guides/tree/master/Package%20Distribute%20Install) is available from the Extensibility team.
-
-### Scenario 1 : The common case
-
-For extensions deployed exclusively via Creative Cloud Desktop, submitting your extension to the Adobe Exchange Store is all you need to do; the Store will generate a cross-platform .zxp file with which your extension can be installed, and Creative Cloud Desktop will take care of extension configuration management, across your Creative Cloud systems.
-
-### Scenario 2 : Enabling other installation methods
-
-You can either generate a self-signed certificate (ZXPSignCmd will make them for you), or get one from a commercial security provider. Here's an example:
-
-```bash
-./ZXPSignCmd -selfSignedCert US California Adobe "Bruce Bullis" TotallySecurePassword certificate.p12
-```
-
-To sign directory `/PanelDir` with `certificate.p12`, do the following:
-
-```bash
-./ZXPSignCmd -sign panelDir/ PanelName.zxp certificate.p12 password -tsa http://timestamp.digicert.com/
-```
-
-Submit your panel to the [Adobe Add-Ons
-site](https://www.adobeexchange.com/producer) for approval, and distribution.
-You can also directly supply the .zxp file enterprise customers, and those who
-do not connect their systems to the public internet, for installation using
-[UPIA](https://helpx.adobe.com/creative-cloud/help/working-from-the-command-line.html), the command line version
-of Extension Manager.
-
-If you encounter any issues with the Add-Ons store or ExManCmd, please [contact
-the Add-Ons team](mailto:avetting@adobe.com).
-
-## Previous Updates
-
-*Note: As we work toward providing UXP-based extensibility, we've stopped additional work on the ExtendScript API.*
+*참고: Premiere Pro 23.x는 CEP11을 통합하므로 서명되지 않은 패널이 있더라도
+(CEP10까지) 이전에 로드하면, 이 단계를 다시 수행해야 하지만 키 CSXS.11에 대해서는 수행해야 합니다.*

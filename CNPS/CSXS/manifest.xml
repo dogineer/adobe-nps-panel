@@ -38,7 +38,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 				</Lifecycle>
 				<UI>
 					<Type>Panel</Type>
-					<Menu>Test</Menu>
+					<Menu>CNPS</Menu>
 					<Geometry>
 						<Size>
 							<Height>940</Height>

@@ -4,7 +4,7 @@
 function onLoaded () {
 	loadJSX();
 
-	let hreurl = "http://localhost:8080";
+	let hreurl = "https://cnps.kro.kr:8080";
 	window.location.href = hreurl;
 }
 function loadJSX() {
