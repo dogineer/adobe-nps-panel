@@ -4,7 +4,7 @@
 function onLoaded () {
 	loadJSX();
 
-	let hreurl = "https://cnps.kro.kr:8080";
+	let hreurl = "https://mediabuddies.kro.kr";
 	window.location.href = hreurl;
 }
 function loadJSX() {

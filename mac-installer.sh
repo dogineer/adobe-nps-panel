@@ -4,14 +4,13 @@ SOURCE="CNPS"
 DESTINATION="/Library/Application Support/Adobe/CEP/extensions"
 USERNAME="$USER"
 
-echo "SOURCE : " + $SOURCE
-echo "DESTINATION : " + $DESTINATION
-echo "폴더를 복사했습니다."
-
+echo "SOURCE :" $SOURCE
+echo "DESTINATION :" $DESTINATION
 # 플러그인 복사
 if [ -d "$SOURCE" ]; then
-    cp -R "$SOURCE" "$DESTINATION"
-    echo "폴더를 복사했습니다."
+    cp -R "$SOURCE" "$DESTINATION" && echo "폴더를 복사했습니다."
+    echo "대상 : $SOURCE"
+    echo "경로 : $DESTINATION"
 else
     echo "오류: $SOURCE 폴더를 찾을 수 없습니다."
 fi
