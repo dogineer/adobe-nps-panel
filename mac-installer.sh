@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SOURCE="CNPS"
+SOURCE="mediabuddies.kro.kr"
 DESTINATION="/Library/Application Support/Adobe/CEP/extensions"
 USERNAME="$USER"
 
